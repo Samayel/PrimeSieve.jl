@@ -1,5 +1,6 @@
 using PrimeSieve
 using Base.Test
+using DeepConvert
 
 include("msieve_test.jl")
 include("gaussian_test.jl")

@@ -46,7 +46,7 @@ function get_one_factor_value(factor)
     a = Array(UInt8,500) # max num digits input to msieve is 300
     nextfactor = ccall((:get_one_factor_value,smsievelib), Ptr{Void}, (Ptr{Void},Ptr{UInt8},Int),
                        factor,a,length(a))
-    return(nextfactor,bytestring(convert(Ptr{UInt8},a)))
+    return(nextfactor,bytestring(convert(Ptr{Uint8},pointer(a))))
 end
 
 # Send ptr to first struct factor. Return all factors as array of strings 
@@ -77,7 +77,7 @@ function factor_strings_to_integers(sfactors::Array{AbstractString})
     arr = Array(T,m)
     arr[m] = n1
     @inbounds for i in 1:m-1
-        arr[i] = parseint(T,sfactors[i])
+        arr[i] = parse(T,sfactors[i])
     end
     arr    
 end

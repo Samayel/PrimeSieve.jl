@@ -126,7 +126,7 @@ function primetableinfo()
         l = length(t)
         ip = rpad("$i",6)
         incr = rpad("10^$i",7)
-        ll = int(log10(l))
+        ll = round(Int, log10(l))
         len = rpad("10^$ll",8)
         maxn = "10^$(ll+i)"
         println("$ip $incr $len $maxn")    
