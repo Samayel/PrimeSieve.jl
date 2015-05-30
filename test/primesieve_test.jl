@@ -30,6 +30,5 @@ c = 100000
 @test apopcount([convert(Uint64,true)]) == 1
 @test apopcount([true]) == 0
 
-# fix bug. asking for limits below first table entry.
 @test countprimes(7) == 4
-@test countprimes(2,7) == 3
+@test countprimes(2,7) == 4

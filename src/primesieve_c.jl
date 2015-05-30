@@ -140,6 +140,8 @@ for (cname,jname) in (
 
     @eval begin
         function ($jname){T,V}(start::T, stop::V)
+            start = max(start, zero(start))
+            stop = max(stop, zero(stop))
             checkstop(stop)
             (start,stop) = promote(start,stop)
             reset_primesieve_num_threads()
@@ -149,7 +151,7 @@ for (cname,jname) in (
                       convert(UInt64,start), convert(UInt64,stop))
             catch
                 throw(InterruptException())
-            end                
+            end
             convert(typeof(start),res)
         end
         ($jname)(stop::ConvT) = ($jname)(one(typeof(convu64(stop))),convu64(stop))

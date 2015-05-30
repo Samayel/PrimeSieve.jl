@@ -53,7 +53,7 @@ function _countprimes(stop)
 end
 
 function _countprimes(start,stop)
-    local n1,n2,count1,count2
+    local n1,n2,count1,count2,d1
     if start < 10
         n1 = ntcountprimes(start)
         count1 = zero(n1)
@@ -61,6 +61,7 @@ function _countprimes(start,stop)
         (count1,i1,rem1) = piandrem(Int128(start))        
         n1 = rem1 == Zero ? Zero : ntcountprimes(i1,i1+rem1)
     end
+    d1 = isprime(start) ? one(n1) : zero(n1)
     if stop < 10
         n2 = ntcountprimes(stop)
         count2 = zero(n2)
@@ -68,7 +69,7 @@ function _countprimes(start,stop)
         (count2,i2,rem2) = piandrem(Int128(stop))
         n2 = rem2 == Zero ? Zero : ntcountprimes(i2,i2+rem2)
     end
-    convert(Int128, count2 - count1 + n2 - n1)
+    convert(Int128, count2 - count1 + n2 - n1 + d1)
 end    
 
 const _primetablefilename = Pkg.dir("PrimeSieve") * "/data/primetables128bin.dat"

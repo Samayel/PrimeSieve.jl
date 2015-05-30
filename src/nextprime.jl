@@ -95,6 +95,7 @@ function nextprime{T<:Integer}(n::T)
 end
 
 function prevprime(n)
+    n <= 2 && throw(DomainError())
     n <= 11 && return prev_prime_array[n+1]
     n < NEXTCROSSOVER &&  return next_prime_det(n,deltaprimes_prev)
     next_prime_prob(n,deltaprimes_prev)
@@ -188,7 +189,7 @@ for (f,fc) in ((:genprimesb, :nextprime), (:genprimesc, :nextprime1))
     @eval begin
         function ($f)(n1,n2)
             ret = Array(typeof(n2),0)
-            v = n1
+            v = n1 - one(n1)
             while true
                 v = ($fc)(v)
                 v > n2 && break
@@ -205,7 +206,7 @@ for (f,fc) in ((:countprimesb, :nextprime), (:countprimesc, :nextprime1))
     @eval begin
         function ($f)(n1,n2)
             c = zero(n2)
-            v = n1
+            v = n1 - one(n1)
             while true
                 v = ($fc)(v)
                 v > n2 && break
