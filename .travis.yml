@@ -1,17 +1,22 @@
-language: cpp
-compiler:
-  - clang
+language: julia
+os:
+  - linux
+# - osx
+julia:
+  - 0.4
+# - nightly
 notifications:
-  email: false
-env:
-  matrix:
-    - JULIAVERSION="juliareleases"
-    - JULIAVERSION="julianightlies"
-before_install:
-  - sudo add-apt-repository ppa:staticfloat/julia-deps -y
-  - sudo add-apt-repository ppa:staticfloat/${JULIAVERSION} -y
-  - sudo apt-get update -qq -y
-  - sudo apt-get install libpcre3-dev julia -y
-  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+  email:
+    recipients:
+      - johm@quyo.de
+    on_success: always
+    on_failure: always
+# uncomment the following lines to override the default test script
 script:
-  - julia -e 'Pkg.init(); Pkg.clone(pwd()); Pkg.build("PrimeSieve"); Pkg.test("PrimeSieve")'
+  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+  - julia -e 'Pkg.clone(pwd()); Pkg.build("PrimeSieve")'
+  - julia --check-bounds=yes -e 'Pkg.test("PrimeSieve"; coverage=true)'
+after_success:
+  - julia -e 'Pkg.add("Coverage")'
+  - julia -e 'cd(Pkg.dir("PrimeSieve")); using Coverage; Coveralls.submit(Coveralls.process_folder())'
+  - julia -e 'cd(Pkg.dir("PrimeSieve")); using Coverage; Codecov.submit(Codecov.process_folder())'
