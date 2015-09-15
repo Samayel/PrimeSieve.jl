@@ -1,5 +1,12 @@
 using BinDeps
 
+try
+    eval(Expr(:import,:DeepConvert))
+catch err
+    Pkg.clone("https://github.com/jlapeyre/DeepConvert.jl")
+    Pkg.build("DeepConvert")
+end
+
 # Find the directory with installed Julia libraries
 julialibpath = dirname(Libdl.dlpath(Libdl.dlopen("libgmp")))
 
