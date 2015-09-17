@@ -1,6 +1,6 @@
 export mfactor
 
-const smsievelib =  "libsmsieve.so"
+const smsievelib = @windows ? "libsmsieve.dll" : "libsmsieve.so"
 
 type Msieveopts
     n::AbstractString

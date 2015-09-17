@@ -9,7 +9,7 @@ export primepi_num_threads
 export prime_set_print_status
 export primepi_test
 
-const libccountname = "libcprimecount.so"
+const libccountname = @windows ? "libcprimecount.dll" : "libcprimecount.so"
 
 for (f,c) in ( # (:primepi, :(:pi_int64)), use function with keyword
                (:pi_deleglise_rivat, :(:pi_deleglise_rivat)),

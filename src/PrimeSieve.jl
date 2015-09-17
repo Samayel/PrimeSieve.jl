@@ -8,7 +8,7 @@ import DeepConvert: @mkdeepconvert
 include("../deps/deps.jl")
 
 function __init__()
-    for lib in [primecount, smsieve, gmpecm, cprimecount, primesieve]
+    for lib in [primecount, smsieve, cprimecount, primesieve]
         Libdl.dlopen_e(lib)
     end
 end
