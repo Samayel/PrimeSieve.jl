@@ -14,10 +14,10 @@ b = 73923403
 c = 100000
 
 @test countprimes(b) == ntcountprimes(b)
-@test typeof(genprimes("10")[1]) == Uint64
+@test typeof(genprimes("10")[1]) == UInt64
 @test countprimes(a,b) == ntcountprimes(a,b)
 @test genprimes(c) == Base.primes(c)
-@test typeof(nprimes("10")[1]) == Uint64
+@test typeof(nprimes("10")[1]) == UInt64
 @test ntcountprimes("10^9") == 50847534
 
 @test countprimes(:(10^19)) == 234057667276344607
@@ -26,8 +26,8 @@ c = 100000
 
 @test apopcount(zeros(10)) == 0
 @test apopcount([]) == 0
-@test apopcount([typemax(Uint64)]) == 64
-@test apopcount([convert(Uint64,true)]) == 1
+@test apopcount([typemax(UInt64)]) == 64
+@test apopcount([convert(UInt64,true)]) == 1
 @test apopcount([true]) == 0
 
 @test countprimes(7) == 4
