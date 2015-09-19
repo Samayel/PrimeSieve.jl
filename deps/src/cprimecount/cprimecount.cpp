@@ -109,7 +109,7 @@ extern "C"
   }
   
   const char * pi_xmax() {
-    std::string m = primecount::max();
+    std::string m = primecount::get_max_x();
     return m.c_str();
   }
 

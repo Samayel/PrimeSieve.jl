@@ -28,13 +28,13 @@ ENV["LIBS"] = "-lgmp -Wl,-rpath -Wl,$julialibpath"
 deps = [
 	gmpecm = library_dependency("gmpecm", aliases = ["libecm"], os = :Unix)
 	primesieve = library_dependency("primesieve", aliases = ["libprimesieve", "libprimesieve-4"])
-	primecount = library_dependency("primecount", aliases = ["libprimecount", "libprimecount-1"], depends = [primesieve])
+	primecount = library_dependency("primecount", aliases = ["libprimecount", "libprimecount-3"], depends = [primesieve])
 	cprimecount = library_dependency("cprimecount", aliases = ["libcprimecount"], depends = [primecount])
 	smsieve = library_dependency("smsieve", aliases = ["libsmsieve"], depends = [gmpecm])
 ]
 
-provides(Sources, URI("http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.4.1.tar.gz"), primesieve, os = :Unix)
-provides(Sources, URI("http://dl.bintray.com/kimwalisch/primecount/primecount-1.4.tar.gz"), primecount, os = :Unix)
+provides(Sources, URI("http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.4.2.tar.gz"), primesieve, os = :Unix)
+provides(Sources, URI("http://dl.bintray.com/kimwalisch/primecount/primecount-2.2.tar.gz"), primecount, os = :Unix)
 provides(Sources, URI("https://gforge.inria.fr/frs/download.php/file/32159/ecm-6.4.4.tar.gz"), gmpecm, os = :Unix)
 # Getting zip- or tarball from github with a predictable name is mysterious to me.
 # But, pushing tags allows downloading this way...
@@ -75,16 +75,17 @@ provides(SimpleBuild,
              end
          end),smsieve, os = :Unix)
 
+cd(Pkg.dir("PrimeSieve", "deps"))
+
 @unix_only begin
-    cd(Pkg.dir("PrimeSieve", "deps"))
     run(`mkdir -p usr/include`)
     run(`cp src/gmp/gmp.h usr/include/`)
 end
 
 if Int == Int32
-    provides(Binaries, Dict(URI("http://quyo.de/julia/primesieve_deps_win32_p4_20150917180911.tar.gz") => deps), os = :Windows)
+    provides(Binaries, Dict(URI("http://quyo.de/julia/primesieve_deps_win32_p4_20150919204804.tar.gz") => deps), os = :Windows)
 else
-    provides(Binaries, Dict(URI("http://quyo.de/julia/primesieve_deps_win64_k8-sse3_20150917180710.tar.gz") => deps), os = :Windows)
+    provides(Binaries, Dict(URI("http://quyo.de/julia/primesieve_deps_win64_k8-sse3_20150919204500.tar.gz") => deps), os = :Windows)
 end
 
 @BinDeps.install Dict([(:gmpecm, :gmpecm),(:primecount, :primecount), (:primesieve, :primesieve),
