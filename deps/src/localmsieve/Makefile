@@ -32,7 +32,7 @@ endif
 #-I/home/jlapeyre/software_source/factoring/gmp-ecm/ecm-6.4.4
 CFLAGS = $(OPT_FLAGS) $(MACHINE_FLAGS) $(WARN_FLAGS) \
 	 	-DMSIEVE_SVN_VERSION="\"$(SVN_VERSION)\"" \
-		-I. -Iinclude -Ignfs -Ignfs/poly -Ignfs/poly/stage1 -I../../usr/include
+		-I. -Iinclude -Ignfs -Ignfs/poly -Ignfs/poly/stage1 -I../../usr/include -I../../src/gmp
 
 
 # tweak the compile flags
