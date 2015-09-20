@@ -83,9 +83,9 @@ cd(Pkg.dir("PrimeSieve", "deps"))
 end
 
 if Int == Int32
-    provides(Binaries, Dict(URI("http://quyo.de/julia/primesieve_deps_win32_p4_20150919204804.tar.gz") => deps), os = :Windows)
+    provides(Binaries, Dict(URI("https://dl.bintray.com/samayel/julia/primesieve_deps_win32_p4_20150919204804.tar.gz") => deps), os = :Windows)
 else
-    provides(Binaries, Dict(URI("http://quyo.de/julia/primesieve_deps_win64_k8-sse3_20150919204500.tar.gz") => deps), os = :Windows)
+    provides(Binaries, Dict(URI("https://dl.bintray.com/samayel/julia/primesieve_deps_win64_k8-sse3_20150919204500.tar.gz") => deps), os = :Windows)
 end
 
 @BinDeps.install Dict([(:gmpecm, :gmpecm),(:primecount, :primecount), (:primesieve, :primesieve),
