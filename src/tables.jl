@@ -8,7 +8,7 @@ immutable PrimeTable
     incr::Int128           # increment to x for successive elements
     maxn::Int128           # largest value in data. (The last element)
     expn::Int              # log10(incr), an integer
-end    
+end
 
 const Zero = zero(Int128)
 
@@ -86,7 +86,7 @@ function _readbintables()
               * "Maybe your package installation is corrupt.")
     end
     mystream = open(fn)
-    buf = zeros(Int,1)
+    buf = zeros(Int64,1)
     read!(mystream,buf)
     numtables = buf[1]
     bintables = Array(Array{Int128,1},0)
