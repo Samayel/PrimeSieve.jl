@@ -95,7 +95,7 @@ function nextprime{T<:Integer}(n::T)
 end
 
 function prevprime(n)
-    n <= 2 && throw(DomainError())
+    n <= 2 && return zero(n)
     n <= 11 && return prev_prime_array[n+1]
     n < NEXTCROSSOVER &&  return next_prime_det(n,deltaprimes_prev)
     next_prime_prob(n,deltaprimes_prev)
@@ -105,22 +105,22 @@ end
 # These are usually slower:  1.5x, 3x, ...
 # But for BigInts they seem to be uniformly faster
 # code by Hans W Borchers https://github.com/hwborchers/Numbers.jl
-function nextprime1(n::Integer)
-    if n <= 1; return 2; end
-    if n == 2; return 3; end
+function nextprime1{T<:Integer}(n::T)
+    if n <= 1; return convert(T, 2); end
+    if n == 2; return convert(T, 3); end
     if iseven(n)
-        n += 1
+        n += one(T)
     else
-        n += 2
+        n += convert(T, 2)
     end
     if isprime(n); return(n); end
     if mod(n, 3) == 1
-        a = 4; b = 2
+        a = convert(T, 4); b = convert(T, 2)
     elseif mod(n, 3) == 2
-        a = 2; b = 4
+        a = convert(T, 2); b = convert(T, 4)
     else
-        n += 2
-        a = 2; b = 4
+        n += convert(T, 2)
+        a = convert(T, 2); b = convert(T, 4)
     end
     p = n
     while !isprime(p)
@@ -132,26 +132,26 @@ function nextprime1(n::Integer)
 end
 
 ## Find prime number preceeding n
-function prevprime1(n::Integer)
+function prevprime1{T<:Integer}(n::T)
     if n <= 2
-        return Array(typeof(n), 0)
+        return zero(T)
     elseif n <= 3
-        return 2
+        return convert(T, 2)
     end
     if iseven(n)
-        n -= 1
+        n -= one(T)
     else
-        n -= 2
+        n -= convert(T, 2)
     end    
     if isprime(n); return n; end
 
     if mod(n, 3) == 1
-        a = 2; b = 4
+        a = convert(T, 2); b = convert(T, 4)
     elseif mod(n, 3) == 2
-        a = 4; b = 2
+        a = convert(T, 4); b = convert(T, 2)
     else
-        n -= 2
-        a = 2; b = 4
+        n -= convert(T, 2)
+        a = convert(T, 2); b = convert(T, 4)
     end
     p = n
     while !isprime(p)

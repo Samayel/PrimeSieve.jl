@@ -58,31 +58,22 @@ function genprimes_sieve{T,V}(start::T,stop::V)
     primescopy(res,n[1])
 end
 
-function genprimes(b; alg::Symbol = :sieve)
-    if alg == :sieve
-        return genprimes_sieve(b)
-    elseif alg == :next
-        return genprimesb(one(b),b)
-    else
-        error("algorithm must be :sieve or :next")
-    end
-end
+genprimes(b) = genprimes(b, Val{:sieve})
+genprimes(b, ::Type{Val{:sieve}}) = genprimes_sieve(b)
+genprimes(b, ::Type{Val{:next}}) = genprimesb(one(b), b)
 
-function genprimes(a,b; alg::Symbol = :auto)
-    if alg == :auto && b < stoplimit
-        if b-a < 200  # this is crude; best depends on a and b, not just difference.
-            return genprimesb(a,b)
-        else
-            return genprimes_sieve(a,b)
-        end
-    elseif alg == :next || b >= stoplimit
-        return genprimesb(a,b)        
-    elseif alg == :sieve
-        return genprimes_sieve(a,b)
-    else
-        error("algorithm must be one of :auto, :sieve, or :next")
-    end
+genprimes(a, b) = genprimes(a, b, Val{:auto})
+genprimes(a, b, alg) = genprimes(promote(a, b)..., alg)
+genprimes{T}(a::T, b::T, ::Type{Val{:auto}}) = begin
+    b >= stoplimit && return genprimes(a, b, Val{:next})
+
+    # this is crude; best depends on a and b, not just difference.
+    b - a < 200 && return genprimes(a, b, Val{:next})
+
+    genprimes(a, b, Val{:sieve})
 end
+genprimes{T}(a::T, b::T, ::Type{Val{:next}}) = genprimesb(a, b)
+genprimes{T}(a::T, b::T, ::Type{Val{:sieve}}) = genprimes_sieve(a, b)
 
 nprimes(n::ConvT,start::ConvT) = nprimes(convu64(n),convu64(start))
 nprimes(n,start::ConvT) = nprimes(n,convu64(start))

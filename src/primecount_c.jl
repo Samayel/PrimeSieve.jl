@@ -41,14 +41,10 @@ function legendrephi(x,a)
 end
 Base.@vectorize_2arg Integer legendrephi
 
-function nthprime(x; alg::Symbol = :count)
-    if alg == :count
-        return nthprimecount(x)
-    elseif alg == :sieve
-        return nthprimea(x)
-    else error("algorithm must be one of :count, :sieve")
-    end
-end
+nthprime(x) = nthprime(x, Val{:count})
+nthprime(x, ::Type{Val{:count}}) = nthprimecount(x)
+nthprime(x, ::Type{Val{:sieve}}) = nthprimea(x)
+
 Base.@vectorize_1arg Integer nthprime
 
 # libprimecount has a member function converts a string to Int128, but we probably handle more cases this way
@@ -66,45 +62,35 @@ pi_deleglise_rivat(x::Int128) = primepi(string(x))
 # :auto is not perfect, fails often
 # Tables or interpolation, or a crude fit for both methods is a better way.
 # The two parameters are x and rem, the distance to the previous table value.
-function primepi(x; alg::Symbol = :auto)
-    x < 2 && return zero(x)
-    if alg == :auto
-        if (x < 7*10^11)  # This is a fairly sharp crossover here
-            return countprimes(x)
-        else
-            rem = piandrem(x)[3]
-            rem == 0 && return countprimes(x)
-            if rem <= 10^9 || x/rem >= 10^7  # this gets a lot of cases correctly.
-                return countprimes(x)
-            else
-                return pi_deleglise_rivat(x)
-            end
-        end
-    elseif alg == :deleglise_rivat || alg == :dr
-        pi_deleglise_rivat(x)
-    elseif alg == :tabsieve
-        countprimes(x)    
-    elseif alg == :lehmer   # The remaining are of academic interest (... well all are, really)
-        pi_lehmer(x)
-    elseif alg == :meissel
-        pi_meissel(x)  
-    elseif alg == :lmo
-        pi_lmo(x)
-    elseif alg == :legendre
-        pi_legendre(x)
-    elseif alg == :sieve
-        piprimesieve(x)
+
+primepi(x)                                               = primepi(x, Val{:auto})
+primepi{T<:Integer}(x::T, ::Type{Val{:dr}})              = convert(T, pi_deleglise_rivat(x))
+primepi{T<:Integer}(x::T, ::Type{Val{:deleglise_rivat}}) = convert(T, pi_deleglise_rivat(x))
+primepi{T<:Integer}(x::T, ::Type{Val{:tabsieve}})        = convert(T, countprimes(x))
+primepi{T<:Integer}(x::T, ::Type{Val{:lehmer}})          = convert(T, pi_lehmer(x))
+primepi{T<:Integer}(x::T, ::Type{Val{:meissel}})         = convert(T, pi_meissel(x))
+primepi{T<:Integer}(x::T, ::Type{Val{:lmo}})             = convert(T, pi_lmo(x))
+primepi{T<:Integer}(x::T, ::Type{Val{:legendre}})        = convert(T, pi_legendre(x))
+primepi{T<:Integer}(x::T, ::Type{Val{:sieve}})           = convert(T, piprimesieve(x))
+
+primepi(x, ::Type{Val{:auto}}) = begin
+    # This is a fairly sharp crossover here
+    x < 7*10^11 && return primepi(x, Val{:tabsieve})
+
+    rem = piandrem(x)[3]
+    rem == 0 && return primepi(x, Val{:tabsieve})
+    if rem <= 10^9 || x/rem >= 10^7  # this gets a lot of cases correctly.
+        return primepi(x, Val{:tabsieve})
     else
-        error("Algorithm must be one of :auto, :deleglise_rivat (:dr), :tabsieve, :legendre, " *
-               ":lehmer, :meissel, :lmo, :sieve.")
+        return primepi(x, Val{:deleglise_rivat})
     end
 end
 
 # using macro will work, too
 #Base.@vectorize_1arg Integer primepi
-function primepi(arr::AbstractArray; alg::Symbol = :auto)
+function primepi(arr::AbstractArray, alg)
     arrout = similar(arr)
-    for i in 1:length(arr) arrout[i] = primepi(arr[i]; alg=alg) end
+    for i in 1:length(arr) arrout[i] = primepi(arr[i], alg) end
     arrout
 end
 
