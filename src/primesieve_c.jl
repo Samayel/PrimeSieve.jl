@@ -30,7 +30,7 @@ for (ctype,typecode) in ((:Cshort, :SHORT_PRIMES),(:Cushort, :USHORT_PRIMES),
     end
 end
 
-const libname = @windows ? "libprimesieve-5.dll" : "libprimesieve.so.5"
+const libname = @windows ? "libprimesieve-6.dll" : "libprimesieve.so.6"
 
 # Copy the returned array, and free C array
 function primescopy(res,n)

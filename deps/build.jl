@@ -29,13 +29,13 @@ ENV["LIBS"] = "-lgmp -Wl,-rpath -Wl,$julialibpath"
 
 deps = [
     gmpecm = library_dependency("gmpecm", aliases = ["libecm"], os = :Unix)
-    primesieve = library_dependency("primesieve", aliases = ["libprimesieve.so.5", "libprimesieve-5"])
+    primesieve = library_dependency("primesieve", aliases = ["libprimesieve.so.6", "libprimesieve-6"])
     primecount = library_dependency("primecount", aliases = ["libprimecount.so.3", "libprimecount-3"], depends = [primesieve])
     cprimecount = library_dependency("cprimecount", aliases = ["libcprimecount"], depends = [primecount])
     smsieve = library_dependency("smsieve", aliases = ["libsmsieve"], depends = [gmpecm])
 ]
 
-provides(Sources, URI("http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.5.0.tar.gz"), primesieve, os = :Unix)
+provides(Sources, URI("http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.6.0.tar.gz"), primesieve, os = :Unix)
 provides(Sources, URI("http://dl.bintray.com/kimwalisch/primecount/primecount-2.3.tar.gz"), primecount, os = :Unix)
 provides(Sources, URI("https://gforge.inria.fr/frs/download.php/file/32159/ecm-6.4.4.tar.gz"), gmpecm, os = :Unix)
 # Getting zip- or tarball from github with a predictable name is mysterious to me.
@@ -81,9 +81,9 @@ provides(SimpleBuild,
          end),smsieve, os = :Unix)
 
 if Int == Int32
-    provides(Binaries, Dict(URI("https://dl.bintray.com/samayel/julia/primesieve_deps_win32_p4_20151108165908.tar.gz") => deps), os = :Windows)
+    provides(Binaries, Dict(URI("https://dl.bintray.com/samayel/julia/primesieve_deps_win32_p4_20151215162704.tar.gz") => deps), os = :Windows)
 else
-    provides(Binaries, Dict(URI("https://dl.bintray.com/samayel/julia/primesieve_deps_win64_k8-sse3_20151108165629.tar.gz") => deps), os = :Windows)
+    provides(Binaries, Dict(URI("https://dl.bintray.com/samayel/julia/primesieve_deps_win64_k8-sse3_20151215162444.tar.gz") => deps), os = :Windows)
 end
 
 isdir(joinpath(pkgdir, "deps", "usr")) && rm(joinpath(pkgdir, "deps", "usr"), recursive=true)
