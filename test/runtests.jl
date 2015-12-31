@@ -11,4 +11,4 @@ include("test_readme.jl")  # this is slow too.
 include("slow_test.jl")
 
 primetest()
-primepi_test()
+#primepi_test()

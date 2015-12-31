@@ -7,7 +7,7 @@ export primepi_xmax
 export primepi_num_threads
 export primepi_num_threads
 export prime_set_print_status
-export primepi_test
+#export primepi_test
 
 const libccountname = @windows ? "libcprimecount.dll" : "libcprimecount.so"
 
@@ -104,7 +104,8 @@ end
 primepi_num_threads(n) = ccall((:prime_set_num_threads,libccountname),Void,(Int,), convert(Int,n))
 primepi_num_threads() = ccall((:prime_get_num_threads,libccountname),Int,())
 prime_set_print_status(stat::Bool) = ccall((:prime_set_num_threads,libccountname),Void,(Int,), stat ? 1 : 0)
-primepi_test() = ccall((:prime_test,libccountname),Int,())
+
+#primepi_test() = ccall((:prime_test,libccountname),Int,())
 
 # libprimecount does not really set the number of threads until you ask.
 # In primecount, the initial value returned by init_num_threads == num cores.

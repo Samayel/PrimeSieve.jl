@@ -102,11 +102,6 @@ extern "C"
   int prime_get_num_threads() {
     return primecount::get_num_threads();   
   }  
-
-  int prime_test() {
-    bool res = primecount::test();
-    return res ? 1 : 0;
-  }
   
   const char * pi_xmax() {
     std::string m = primecount::get_max_x();
@@ -120,6 +115,11 @@ extern "C"
   
   // Not in libprimecount API
   /*
+  int prime_test() {
+    bool res = primecount::test();
+    return res ? 1 : 0;
+  }
+
   primecount::int128_t pi_deleglise_rivat128(primecount::int128_t x) {
     return primecount::pi_deleglise_rivat((primecount::int128_t) x);
   }
