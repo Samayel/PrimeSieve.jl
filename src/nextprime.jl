@@ -68,7 +68,7 @@ function next_prime_prob(n, deltaprimes)
     T = typeof(n)  # all this converting does nothing, apparently. As expected.
     @inbounds n += deltaprimes[mod(n,convert(T,210))+one(T)]
     while true
-        if
+        if true &&
             gcd(n,convert(T,955049953)) == one(T) &&
             gcd(n,convert(T,162490421)) == one(T) &&
 #            gcd(n,bigprimemultiple) == 1 &&  # Maxima uses this

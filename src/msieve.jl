@@ -1,9 +1,9 @@
 export mfactor
 
-const smsievelib = @windows ? "libsmsieve.dll" : "libsmsieve.so"
+const smsievelib = @static is_windows() ? "libsmsieve.dll" : "libsmsieve.so"
 
 type Msieveopts{S}
-    n::ASCIIString
+    n::String
     deadline::Int
     logfile::S
     ecm::Bool
@@ -40,7 +40,7 @@ function get_one_factor_value(factor)
     a = Array(UInt8,500) # max num digits input to msieve is 300
     nextfactor = ccall((:get_one_factor_value,smsievelib), Ptr{Void}, (Ptr{Void},Ptr{UInt8},Int), factor, a, length(a))
 
-    nextfactor, bytestring(convert(Ptr{UInt8}, pointer(a)))
+    nextfactor, unsafe_string(convert(Ptr{UInt8}, pointer(a)))
 end
 
 # Send ptr to first struct factor. Return all factors as array of strings 

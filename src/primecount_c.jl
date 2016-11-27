@@ -9,7 +9,7 @@ export primepi_num_threads
 export prime_set_print_status
 #export primepi_test
 
-const libccountname = @windows ? "libcprimecount.dll" : "libcprimecount.so"
+const libccountname = @static is_windows() ? "libcprimecount.dll" : "libcprimecount.so"
 
 for (f,c) in ( # (:primepi, :(:pi_int64)), use function with keyword
                (:pi_deleglise_rivat, :(:pi_deleglise_rivat)),
@@ -51,7 +51,7 @@ Base.@vectorize_1arg Integer nthprime
 function primepi{T<:AbstractString}(s::T)
     n1 = conv128(s)
     s1 = string(n1)
-    parse(Int128, bytestring(ccall((:pi_string,libccountname),Ptr{UInt8},(Ptr{UInt8},),s1)))
+    parse(Int128, unsafe_string(ccall((:pi_string,libccountname),Ptr{UInt8},(Ptr{UInt8},),s1)))
 end
 
 Base.@vectorize_1arg AbstractString primepi
@@ -98,7 +98,7 @@ end
 #register_sigint() = ccall((:cprimecount_register_sigint, libccountname), Void, ())
 
 # Sun Apr  3 18:21:07 CEST 2016:  These two are broken. This syntax worked at one point. Julia has changed
-#primepi_xmax() = parse(Int128, bytestring(ccall((:pi_xmax, libccountname), Ptr{UInt8}, ())))
+#primepi_xmax() = parse(Int128, unsafe_string(ccall((:pi_xmax, libccountname), Ptr{UInt8}, ())))
 #const PRIMEPI_XMAX = primepi_xmax()
 
 primepi_num_threads(n) = ccall((:prime_set_num_threads,libccountname),Void,(Int,), convert(Int,n))

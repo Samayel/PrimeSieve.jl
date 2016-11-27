@@ -1,6 +1,8 @@
 __precompile__(false)
 
 using DeepConvert
+using Primes
+
 module PrimeSieve
 
 import DeepConvert: @mkdeepconvert

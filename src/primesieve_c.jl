@@ -9,7 +9,7 @@ checkstart(val) = val <= startlimit ? true : error("start value ", val, " is gre
 # libprimesieve also uses all cores by default.
 # We store the number of threads because libprimecount will always set
 # it to 1 and manage threads itself.
-PRIMESIEVENUMTHREADS = CPU_CORES
+PRIMESIEVENUMTHREADS = Sys.CPU_CORES
 
 # Returned primes have this data type
 const SHORT_PRIMES = 0
@@ -21,20 +21,23 @@ const ULONG_PRIMES = 5
 const LONGLONG_PRIMES = 6
 const ULONGLONG_PRIMES = 7
 
+function primetype
+end
+
 for (ctype,typecode) in ((:Cshort, :SHORT_PRIMES),(:Cushort, :USHORT_PRIMES),
                          (:Cint, :INT_PRIMES),(:Cuint, :UINT_PRIMES),
                          (:Clong, :LONG_PRIMES),(:Culong, :ULONG_PRIMES),
                          (:Clonglong, :LONGLONG_PRIMES),(:Culonglong, :ULONGLONG_PRIMES))
     @eval begin
-        primetype(::Type{$ctype}) = $typecode
+        method_exists(primetype, (Type{$ctype},)) || (primetype(::Type{$ctype}) = $typecode)
     end
 end
 
-const libname = @windows ? "libprimesieve-6.dll" : "libprimesieve.so.6"
+const libname = @static is_windows() ? "libprimesieve-6.dll" : "libprimesieve.so.6"
 
 # Copy the returned array, and free C array
 function primescopy(res,n)
-    retv = pointer_to_array(res,n,false)
+    retv = unsafe_wrap(Array,res,n,false)
     nretv = copy(retv)
     ccall((:primesieve_free, libname), Void, (Ptr{Void},), res)
     nretv
@@ -92,7 +95,7 @@ function nprimes{T}(n::T,start)
     end        
     primescopy(res,n)
 end
-nprimes(start) = nprimes(one(typeof(start)),start)        
+#nprimes(start) = nprimes(one(typeof(start)),start)        
 nprimes(n) = nprimes(n,one(typeof(n)))
 
 # return the nth prime
@@ -110,7 +113,7 @@ for (cname,jname) in ((:(:primesieve_nth_prime), :snthprimea),
             end
             convert(T,res)
         end
-        ($jname)(start) = ($jname)(one(typeof(start)),start)        
+        #($jname)(start) = ($jname)(one(typeof(start)),start)        
         ($jname)(n) = ($jname)(n,1)
     end
 end
