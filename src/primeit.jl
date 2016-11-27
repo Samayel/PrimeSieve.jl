@@ -20,3 +20,6 @@ Base.next(pri::PrimeIt, state)  = (state, nextprime(state))
 Base.next(pri::PrimeInfIt, state) = (state, nextprime(state))
 Base.done(pri::PrimeIt, state) = state > pri.n2
 Base.done(pri::PrimeInfIt, state) = false
+
+Base.iteratorsize(::PrimeIt) = Base.SizeUnknown()
+Base.iteratorsize(::PrimeInfIt) = Base.IsInfinite()
