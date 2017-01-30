@@ -1,9 +1,9 @@
 builds/
 downloads/
 localsrc/
-src/primecount-1.4
-src/primesieve-5.4.1
-src/msieve-shared-0.0.*/
-src/ecm-6.4.*/
+src/primecount-*
+src/primesieve-*
+src/msieve-shared-*/
+src/ecm-*/
 usr/
 deps.jl
