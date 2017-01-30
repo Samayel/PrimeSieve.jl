@@ -36,7 +36,7 @@ deps = [
 ]
 
 provides(Sources, URI("http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.7.3.tar.gz"), primesieve, os = :Unix)
-provides(Sources, URI("http://dl.bintray.com/kimwalisch/primecount/primecount-2.6.tar.gz"), primecount, os = :Unix)
+provides(Sources, URI("http://dl.bintray.com/kimwalisch/primecount/primecount-3.4.tar.gz"), primecount, os = :Unix)
 provides(Sources, URI("https://gforge.inria.fr/frs/download.php/file/36224/ecm-7.0.4.tar.gz"), gmpecm, os = :Unix)
 # Getting zip- or tarball from github with a predictable name is mysterious to me.
 # But, pushing tags allows downloading this way...
