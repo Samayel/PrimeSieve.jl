@@ -81,9 +81,9 @@ provides(SimpleBuild,
          end),smsieve, os = :Unix)
 
 if Int == Int32
-    provides(Binaries, Dict(URI("https://fs.quyo.net/lfs/julia/primesieve_deps_win32_p4_20170130155654.tar.gz") => deps), os = :Windows)
+    provides(Binaries, Dict(URI("https://github.com/Samayel/bin4win/raw/master/i686-w64-mingw32/primesieve_deps_win32_p4_20170130155654.tar.gz") => deps), os = :Windows)
 else
-    provides(Binaries, Dict(URI("https://fs.quyo.net/lfs/julia/primesieve_deps_win64_k8-sse3_20170130155107.tar.gz") => deps), os = :Windows)
+    provides(Binaries, Dict(URI("https://github.com/Samayel/bin4win/raw/master/x86_64-w64-mingw32/primesieve_deps_win64_k8-sse3_20170130155107.tar.gz") => deps), os = :Windows)
 end
 
 isdir(joinpath(pkgdir, "deps", "usr")) && rm(joinpath(pkgdir, "deps", "usr"), recursive=true)
