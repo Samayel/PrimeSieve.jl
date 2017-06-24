@@ -1,7 +1,6 @@
 __precompile__(false)
 
 using DeepConvert
-using Primes
 
 module PrimeSieve
 
@@ -15,7 +14,8 @@ function __init__()
     end
 end
 
-import Base: convert, ccall
+import Base: convert
+using Primes
 
 export genprimes, nprimes
 export snthprimea

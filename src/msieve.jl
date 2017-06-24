@@ -37,7 +37,7 @@ msieve_free(obj) =  ccall((:msieve_obj_free_2,smsievelib), Void, (Ptr{Void},), o
 # Send ptr to struct factor and get string rep of one factor.
 # A ptr to next struct factor, correponding to next factor, is returned.
 function get_one_factor_value(factor)
-    a = Array(UInt8,500) # max num digits input to msieve is 300
+    a = Array{UInt8}(500) # max num digits input to msieve is 300
     nextfactor = ccall((:get_one_factor_value,smsievelib), Ptr{Void}, (Ptr{Void},Ptr{UInt8},Int), factor, a, length(a))
 
     nextfactor, unsafe_string(convert(Ptr{UInt8}, pointer(a)))
@@ -45,7 +45,7 @@ end
 
 # Send ptr to first struct factor. Return all factors as array of strings 
 function get_all_factor_values(factor)
-    allf = Array(AbstractString, 0)
+    allf = Array{AbstractString}(0)
     nfactor = factor
 
     for i in 1:get_num_factors(factor)
@@ -66,7 +66,7 @@ end
 
 # input factors as Array of strings. Output Array of Integers (Usually of type Int)
 function factor_strings_to_integers{T<:Integer}(::Type{T}, sfactors::Array{AbstractString})
-    arr = Array(T, length(sfactors))
+    arr = Array{T}(length(sfactors))
     @inbounds for (i, f) in enumerate(sfactors)
         arr[i] = parse(T, f)
     end
@@ -99,7 +99,7 @@ end
 for (thetype) in ( :AbstractString, :Integer ) 
     @eval begin
         function mfactor{T<:$thetype}(a::AbstractArray{T,1}; dl::Integer = 0, logfile::AbstractString = "", ecm::Bool = false, info::Bool = false)
-            outa = Array(Any, 0)
+            outa = Array{Any}(0)
             for x in a
                 res = mfactor(x; deadline=dl, logfile=logfile, ecm=ecm, info=info)
                 push!(outa, res)

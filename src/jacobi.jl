@@ -26,5 +26,3 @@ function jacobisymbol(a::Union{Signed,Unsigned},n::Union{Signed,Unsigned})
     end    
     return n == 1 ? j : 0
 end
-
-Base.@vectorize_2arg Union{Signed,Unsigned} jacobisymbol
